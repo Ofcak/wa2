@@ -1,0 +1,52 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25.10.2015, 17:55:16
+    Author     : Mira
+*/
+
+div{
+    //border:1px solid red;
+}
+body div.client{
+    border-right: solid 1px black;
+    float:left;
+    padding: 5px;
+    width: 700px;
+}
+body div.client div.oneMessage{
+    margin: 5px;
+    padding:5px;
+    border-top: solid 1px black;
+}
+body div.client div.oneMessage:hover{
+    margin: 5px;
+    padding:5px;
+    border-top: solid 2px black;
+    background-color: #f0f0f0;
+}
+
+body div.client div.oneMessage button{
+    float:right;
+}
+
+body div.response{
+    float:left;
+    border-left: solid 1px black;
+    padding: 5px;
+    width: 500px;
+}
+
+body div.response div.oneResp{
+    margin: 5px;
+    border-top: solid 1px black;
+}
+
+body div.response div.oneResp.bad{
+    margin: 5px;
+    border-top: solid 1px red;
+    color:red;
+}

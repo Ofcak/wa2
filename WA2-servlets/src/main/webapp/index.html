@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--minimalistic css styles-->
+        <style>
+            @import "layout.css";
+        </style>
+        <script src="AJAX.js" ></script>
+        <script src="common.js" ></script>
+    </head>
+    <body>
+        <div class="client">
+            <div id="WScontainer">
+            
+            </div>
+            <!-- For debug of WebSockets
+            input type="text" id="WSmessage" name="message" />
+            <button type="button" id="WSsend" onclick="sendWS()">SendWS</button>
+            <br><br>
+            <input type="text" id="WSaddress" name="address" value="ws://localhost:8080/websocket/chat" style="width:400px;" />
+            <button type="button" id="WSsetAddress" onclick="setWS()">SetWS</button>
+            <br><br-->
+            
+            <!--button onclick="logoutBasicAuth()"> logout USER </button-->
+            <!--br>make URL relative?
+            <br>client possibility to send POST/PUT as XML, does not work for Reservations
+            <br>thick client on address "../" not "../service/"
+            <br> .. updates of reservations based on password are in Checkpoint 2.
+            <br-->
+            
+            <h1> REST </h1>
+            <label>Pozadovana adresa: </label><input type="text" value="http://localhost:8080/WA2-servlets-1/" name="requiredAddress" id="requiredAddress"/>
+            <p>http://localhost:8080/WA2-servlets-1/</p>
+            <!--label>Use XML <input type="checkbox" value="1" id="useXML">, instead of JSON:</label-->
+            <h2>User</h2>
+            <div class="oneMessage">
+                List of all destinations - GET (URI: /User),
+                GET( URI: /User/{id}) <button onclick="getResponse('User', 'idUser')"> GET </button>
+                <br><label>id: <input id="idUser" type="text" value="" placeholder="id"/></label>
+            </div> 
+            <div class="oneMessage">
+                Create user - POST (URI: /User) <button onclick="postMessage('User', 'newUser')"> POST </button>
+                <br><label>name: <input id="newUserName" type="text" value="" placeholder="name"/></label>
+                <br><label>CompanyID: <input id="newUserCompany" type="text" value="" placeholder="companyID"/></label>
+                
+                <input id="newUserID" type="hidden" value="-1"/>
+            </div> 
+            <div class="oneMessage">
+                Modify user - PUT (URI: /User/{id}) <button onclick="putMessage('User', 'editUser')"> PUT </button>
+                <br/><label>ID: <input id="editUserID" type="text" value="" placeholder="id"/></label>
+                <br><label>name: <input id="editUserName" type="text" value="" placeholder="name"/></label>
+                <br><label>CompanyID: <input id="editUserCompany" type="text" value="" placeholder="companyID"/></label>
+            </div> 
+            <div class="oneMessage">
+                Delete user - DELETE (URI: /User/{id}) <button onclick="deleteMessage('User', 'idUserForDelete')"> DELETE </button>
+                <br><label>id: <input id="idUserForDelete" type="text" value="" placeholder="id"/></label>
+            </div> 
+            
+            <div class="oneMessage">
+                <b>SendMQ:</b> <button onclick="sendMQ('addrMQ', 'noteMQ', 'numMQ')"> SendMQ </button>
+
+                <!--label>Address:</label> <input type="text" id="addrMQ" name="addrMQ" value="http://localhost:8080/WA2-servlets-1/sendMQ.jsp">
+                <br/-->
+                <label>Message:</label> <input type="text" id="noteMQ" name="noteMQ" value="Moje poznamka">
+                <br/>
+                <label>Num of messages:</label> <input type="text" id="numMQ" name="numMQ" value="5">
+                
+                <button onclick="manualMQ()"> manualpolling :) </button>
+            </div>
+            <!--h2>Flight Resource</h2>
+            <div class="oneMessage">
+                List of all flights - GET (URI list of flights: /flight, URI one flight: /flight/{id}) 
+                <button onclick="getResponse('flight', 'idFlight')"> GET </button>
+                <br><label>id: <input id="idFlight" type="text" value="" placeholder="id"/></label>
+                <br/><h3>Filters</h3>
+                <br/><label>Sort by:
+                    <select id="sortingBy">
+                        <option value=""> - </option>
+                        <option value="dateOfDeparture"> dateOfDeparture </option>
+                        <option value="name"> name </option>
+                        <option value="price"> price </option>
+                    </select>
+                    <!--input type="text" value="" id="sortingBy" placeholder="dateOfDeparture, name, price"--><!--/label>
+                <label> way:<input type="text" value="" id="sortingWay" placeholder="asc, desc"></label>
+                <br/><label>Filter by: dateOfDeparture<input type="hidden" value="dateOfDeparture" id="filterBy"></label>
+                <br/>
+                <label> from:<input type="text" value="2015-08-16T12:35:00+01:00" id="filterMin"></label>
+                <label> to:<input type="text" value="2015-08-18T12:35:00+01:00" id="filterMax"></label>
+                <br/><label>Pagination offset:<input type="text" value="" id="pagingOffset"></label>
+                <label> base:<input type="text" value="" id="pagingBase"></label>
+            </div> 
+            <div class="oneMessage">
+                Create a flight - POST (URI: /flight) <button onclick="postMessage('flight', 'newFlight')"> POST </button>
+                <br><label>name: <input id="newFlightName" type="text" value="" placeholder="name"/></label>
+                <label>date: <input id="newFlightDate" type="text" value="2015-08-17T12:35:00+01:00" placeholder=""/></label>
+                <br/><label>distance: <input id="newFlightDistance" type="text" value="" placeholder=""/></label>
+                <label>seats: <input id="newFlightSeats" type="text" value="" placeholder=""/></label>
+                <br/><label>price: <input id="newFlightPrice" type="text" value="" placeholder=""/></label>
+                <br/><label>from: <input id="newFlightFrom" type="text" value="" placeholder=""/></label>
+                <label>to: <input id="newFlightTo" type="text" value="" placeholder=""/></label>
+                <input id="newFlightID" type="hidden" value=""/>
+                <input id="newFlightURL" type="hidden" value=""/>
+            </div> 
+            <div class="oneMessage">
+                Change flight info - PUT (URI: /flight/{id}) <button onclick="putMessage('flight', 'editFlight')"> PUT </button>
+                <br><label>name: <input id="editFlightName" type="text" value="" placeholder="name"/></label>
+                <label>date: <input id="editFlightDate" type="text" value="2015-08-17T12:35:00+01:00" placeholder=""/></label>
+                <br/><label>distance: <input id="editFlightDistance" type="text" value="" placeholder=""/></label>
+                <label>seats: <input id="editFlightSeats" type="text" value="" placeholder=""/></label>
+                <br/><label>price: <input id="editFlightPrice" type="text" value="" placeholder=""/></label>
+                <br/><label>from: <input id="editFlightFrom" type="text" value="" placeholder=""/></label>
+                <label>to: <input id="editFlightTo" type="text" value="" placeholder=""/></label>
+                <br/><label>id: <input id="editFlightID" type="text" value=""/></label>
+                <label>url: <input id="editFlightURL" type="text" value=""/></label>
+            </div> 
+            <div class="oneMessage">
+                Delete a flight - DELETE (URI: /flight/{id}) <button onclick="deleteMessage('flight', 'idFlForDelete')"> DELETE </button>
+                <br><label>id: <input id="idFlForDelete" type="text" value="" placeholder="id"/></label>
+            </div> 
+            
+            <h2>Reservation</h2>
+            <div class="oneMessage">
+                List - GET (URI list of reservations: /reservation, URI one reservation: /reservation/{id}) 
+                <button onclick="getResponse('reservation', 'idRese')"> GET </button>
+                <br><label>id: <input id="idRese" type="text" value="" placeholder="id"/></label>
+                <label>password: <input id="resPWget" type="text" value="" placeholder="password"/></label>
+            </div> 
+            <div class="oneMessage">
+                Create - POST (URI: /reservation) <button onclick="postMessage('reservation', 'newReser')"> POST </button>
+                <br><label>Flight: <input id="newReserFlight" type="text" value=""/></label>
+                <label>date of reservation: <input id="newReserCreated" type="text" value="2015-08-12T12:35:00+01:00" placeholder=""/></label>
+                <br/><label>reserved seats: <input id="newReserSeats" type="text" value="" placeholder=""/></label>
+                <input id="newReserPW" type="hidden" value=""/>
+                <input id="newReserState" type="hidden" value="new"/> <!--placeholder="(new, canceled, paid)"-->
+                <!--input id="newReserID" type="hidden" value=""/>
+                <input id="newReserURL" type="hidden" value=""/>
+            </div> 
+            <div class="oneMessage">
+                Update - PUT (URI: /reservation/{id}) <button onclick="putMessage('reservation', 'editReser')"> PUT </button>
+                <br><label>Flight: <input id="editReserFlight" type="text" value=""/></label>
+                <label>date: <input id="editReserCreated" type="text" value="2015-08-12T12:35:00+01:00" placeholder=""/></label>
+                <br/><label>password: <input id="editReserPW" type="text" value="" placeholder=""/></label>
+                <label>seats: <input id="editReserSeats" type="text" value="" placeholder=""/></label>
+                <br/><label>state: <input id="editReserState" type="text" value="" placeholder="(new, canceled, paid)"/></label>
+                <br/><label>id:<input id="editReserID" type="text" value=""/></label>
+                <label>url:<input id="editReserURL" type="text" value=""/></label>
+            </div> 
+            <div class="oneMessage">
+                Delete - DELETE (URI: /reservation/{id}) <button onclick="deleteMessage('reservation', 'idResForDelete')"> DELETE </button>
+                <br><label>id: <input id="idResForDelete" type="text" value="" placeholder="id"/></label>
+            </div> 
+        </div-->
+        <div class="response">
+            <h1> Responses </h1>
+            <div id="responsesBox">
+                <div class="oneResp" id="response1">
+                    <p>
+                        some log
+                        <br/> some log
+                        <br/> ------ ANSWER ------
+                        <br/> Some answer from AJAX
+                        <br/> ------ / ANSWER ------
+                        <br/> some log
+                    </p>
+                </div>
+                <div id="log">
+                    <h2>Javascript log:</h2>
+                    <p id="logP">
+                        Javascript is dissabled!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

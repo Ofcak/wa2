@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/miradb</property>
+        <property name="hibernate.connection.username">Mira</property>
+        <property name="hibernate.connection.password">Mira-pw8</property>
+        
+        <property name="hibernate.show_sql">true</property>
+        <!--property name="hibernate.connection.datasource">java:/MiraMySqlDS</property-->
+        <!-- DB schema will be updated if needed 
+            create - drops and creates all tables at the begining
+            update - ALTER tables if schema is changed, however it do not create table if it is missing
+            .. whole .auto option should not be used in production, it is just aid for development
+        -->
+        <!--property name="hibernate.hbm2ddl.auto">create</property-->
+
+        <mapping class="wa2.sem.entities.Company"/>
+        <mapping class="wa2.sem.entities.Position"/>
+        <mapping class="wa2.sem.entities.Shift"/>
+        <mapping class="wa2.sem.entities.User"/>
+
+    </session-factory>
+</hibernate-configuration>
